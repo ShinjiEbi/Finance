@@ -27,7 +27,7 @@
   --shadow:0 2px 16px rgba(0,0,0,.2);--shadow2:0 4px 24px rgba(0,0,0,.3);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;padding-bottom:calc(var(--nav-h)+20px);transition:background .3s,color .3s;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;padding-bottom:calc(var(--nav-h)+40px);transition:background .3s,color .3s;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 h1,h2,h3{font-family:'Playfair Display',serif}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
 
@@ -77,7 +77,7 @@ select.fi{cursor:pointer}
 .btn-sm{padding:7px 14px;font-size:.78rem;border-radius:10px}
 .btn-row{display:flex;gap:8px}.btn-row .btn{flex:1}
 
-.fab{position:fixed;bottom:calc(var(--nav-h)+16px);right:16px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;font-size:1.8rem;cursor:pointer;box-shadow:var(--shadow2);z-index:90;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.fab{position:fixed;bottom:calc(var(--nav-h)+20px);right:16px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;font-size:1.8rem;cursor:pointer;box-shadow:var(--shadow2);z-index:90;display:flex;align-items:center;justify-content:center;transition:transform .2s}
 .fab:active{transform:scale(.9)}
 
 .tx-item{display:flex;align-items:center;padding:11px 0;border-bottom:1px solid var(--border);gap:11px;cursor:pointer;transition:background .15s}
@@ -157,7 +157,11 @@ select.fi{cursor:pointer}
 
 .cmp{font-size:.7rem;font-weight:600;display:inline-flex;align-items:center;gap:2px}
 .cmp.up{color:var(--red)}.cmp.down{color:var(--green)}
-.rec-tag{font-size:.6rem;padding:2px 6px;border-radius:6px;background:var(--accent);color:white;font-weight:700;margin-right:4px}
+.rem-tag{font-size:.6rem;padding:2px 6px;border-radius:6px;background:var(--accent4);color:var(--text);font-weight:700;margin-right:4px;display:inline-flex;align-items:center;gap:2px}
+.rem-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.rem-row select,.rem-row input[type=number]{padding:8px 10px;border-radius:8px;border:2px solid var(--border);background:var(--bg3);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;width:70px;-webkit-appearance:none}
+.rem-row select{width:auto}
+.rem-row select:focus,.rem-row input:focus{border-color:var(--accent)}
 .toggle{width:48px;height:26px;border-radius:13px;background:var(--border);position:relative;cursor:pointer;transition:background .3s;flex-shrink:0;display:inline-block}
 .toggle.on{background:var(--accent)}.toggle .knob{width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;left:3px;transition:transform .3s;box-shadow:0 2px 4px rgba(0,0,0,.15)}
 .toggle.on .knob{transform:translateX(22px)}
@@ -218,6 +222,7 @@ select.fi{cursor:pointer}
   <div class="card"><div class="card-t"><span class="dot" style="background:var(--accent4)"></span>Objectifs d'épargne<button class="btn btn-sm btn-s" style="margin-left:auto" onclick="openGM()">+ Ajouter</button></div><div id="gList"></div></div>
   <div class="card"><div class="card-t"><span class="dot" style="background:var(--accent5)"></span>Simulateur de crédit</div><div class="fi-row"><div class="fg"><label>Montant (€)</label><input type="number" class="fi" id="lnA" value="10000" oninput="calcLn()"></div><div class="fg"><label>Taux (%)</label><input type="number" class="fi" id="lnR" value="3.5" step=".1" oninput="calcLn()"></div></div><div class="fg"><label>Durée (mois)</label><input type="number" class="fi" id="lnD" value="60" oninput="calcLn()"></div><div class="sal-grid" id="lnRes"></div></div>
   <div class="card"><div class="card-t"><span class="dot" style="background:var(--accent2)"></span>Catégories<button class="btn btn-sm btn-s" style="margin-left:auto" onclick="openCM()">+ Créer</button></div><div id="catL"></div></div>
+  <div class="card"><div class="card-t"><span class="dot" style="background:var(--accent5)"></span>Banques<button class="btn btn-sm btn-s" style="margin-left:auto" onclick="openBkM()">+ Ajouter</button></div><div id="bkL"></div></div>
   <div class="card"><div class="card-t"><span class="dot" style="background:var(--accent)"></span>Données</div><div class="btn-row" style="margin-bottom:8px"><button class="btn btn-s" onclick="expJSON()">📤 JSON</button><button class="btn btn-s" onclick="expCSV()">📤 CSV</button><button class="btn btn-s" onclick="$('impF').click()">📥 Import</button></div><input type="file" id="impF" accept=".json" style="display:none" onchange="impJSON(event)"><button class="btn btn-d" style="width:100%" onclick="resetAll()">🗑️ Réinitialiser</button></div>
 </div>
 
@@ -242,7 +247,13 @@ select.fi{cursor:pointer}
   <div class="fi-row"><div class="fg"><label>Organisme</label><input type="text" class="fi" id="aOrg" placeholder="Ex: Leocare..."></div><div class="fg" style="max-width:120px"><label>Montant (€)</label><input type="number" class="fi" id="aAmt" step=".01" min="0" placeholder="0.00" inputmode="decimal"></div></div>
   <div class="fg"><label>Banque</label><select class="fi" id="aBk"><option value="">Choisir...</option></select></div>
   <div class="fg"><label>Note</label><input type="text" class="fi" id="aNt" placeholder="Optionnel..."></div>
-  <div class="fg"><label style="display:flex;align-items:center;gap:8px">Récurrent <div class="toggle" id="aRec" onclick="this.classList.toggle('on')"><div class="knob"></div></div></label></div>
+  <div class="fg"><label style="display:flex;align-items:center;gap:8px">Rappel <div class="toggle" id="aRem" onclick="this.classList.toggle('on');$('aRemConf').style.display=this.classList.contains('on')?'flex':'none'"><div class="knob"></div></div></label>
+    <div class="rem-row" id="aRemConf" style="display:none">
+      <span style="font-size:.8rem;color:var(--text2)">Tous les</span>
+      <input type="number" id="aRemN" value="1" min="1" max="99">
+      <select id="aRemU"><option value="jour">jour(s)</option><option value="semaine">semaine(s)</option><option value="mois" selected>mois</option></select>
+    </div>
+  </div>
   <div class="btn-row"><button class="btn btn-s" onclick="closeM('addM')">Annuler</button><button class="btn btn-p" onclick="saveTx()">Enregistrer</button></div>
 </div></div>
 
@@ -253,6 +264,13 @@ select.fi{cursor:pointer}
   <div class="fg"><label>Catégorie</label><input type="text" class="fi" id="eCat"></div>
   <div class="fi-row"><div class="fg"><label>Organisme</label><input type="text" class="fi" id="eOrg"></div><div class="fg" style="max-width:120px"><label>Montant</label><input type="number" class="fi" id="eAmt" step=".01" inputmode="decimal"></div></div>
   <div class="fg"><label>Note</label><input type="text" class="fi" id="eNt"></div>
+  <div class="fg"><label style="display:flex;align-items:center;gap:8px">Rappel <div class="toggle" id="eRem" onclick="this.classList.toggle('on');$('eRemConf').style.display=this.classList.contains('on')?'flex':'none'"><div class="knob"></div></div></label>
+    <div class="rem-row" id="eRemConf" style="display:none">
+      <span style="font-size:.8rem;color:var(--text2)">Tous les</span>
+      <input type="number" id="eRemN" value="1" min="1" max="99">
+      <select id="eRemU"><option value="jour">jour(s)</option><option value="semaine">semaine(s)</option><option value="mois" selected>mois</option></select>
+    </div>
+  </div>
   <div class="btn-row"><button class="btn btn-d" onclick="delTx()">Supprimer</button><button class="btn btn-p" onclick="updTx()">Modifier</button></div>
 </div></div>
 
@@ -285,6 +303,14 @@ select.fi{cursor:pointer}
   <div class="btn-row"><button class="btn btn-s" onclick="closeM('catM')">Annuler</button><button class="btn btn-p" onclick="saveCt()">Créer</button></div>
 </div></div>
 
+<!-- MODAL BANQUE -->
+<div class="modal-bg" id="bkM"><div class="modal"><div class="modal-h"></div>
+  <h3 style="margin-bottom:14px">Nouvelle banque</h3>
+  <div class="fg"><label>Icône</label><div style="display:flex;gap:8px;align-items:center"><button class="icon-btn" id="bkIB" onclick="toggleIP('bkIP')" style="font-size:1.3rem;flex-shrink:0">🏦</button></div><div class="icon-grid" id="bkIP" style="display:none;margin-top:8px"></div></div>
+  <div class="fg"><label>Nom de la banque</label><input type="text" class="fi" id="bkNm"></div>
+  <div class="btn-row"><button class="btn btn-s" onclick="closeM('bkM')">Annuler</button><button class="btn btn-p" onclick="saveBk()">Créer</button></div>
+</div></div>
+
 <script>
 const $=id=>document.getElementById(id);
 const MF=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
@@ -308,8 +334,8 @@ let stY=new Date().getFullYear(),txFi='Tout',bTab='Prelevement';
 let editId=null,editBId=null,editGId=null,selIcon='📌';
 
 /* DB */
-const DB='FinRomV3';let db;
-function openDB(){return new Promise((ok,no)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=e=>{const d=e.target.result;['transactions','budget','goals','settings','categories'].forEach(n=>{if(!d.objectStoreNames.contains(n)){const s=d.createObjectStore(n,{keyPath:'id',autoIncrement:true});if(n==='transactions')s.createIndex('date','date')}})};r.onsuccess=e=>{db=e.target.result;ok()};r.onerror=e=>no(e)})}
+const DB='FinRomV4';let db;
+function openDB(){return new Promise((ok,no)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=e=>{const d=e.target.result;['transactions','budget','goals','settings','categories','banks'].forEach(n=>{if(!d.objectStoreNames.contains(n)){const s=d.createObjectStore(n,{keyPath:'id',autoIncrement:true});if(n==='transactions')s.createIndex('date','date')}})};r.onsuccess=e=>{db=e.target.result;ok()};r.onerror=e=>no(e)})}
 function dbA(s){return new Promise((ok,no)=>{const t=db.transaction(s,'readonly').objectStore(s).getAll();t.onsuccess=()=>ok(t.result);t.onerror=()=>no(t.error)})}
 function dbP(s,o){return new Promise((ok,no)=>{const t=db.transaction(s,'readwrite').objectStore(s).put(o);t.onsuccess=()=>ok(t.result);t.onerror=()=>no(t.error)})}
 function dbD(s,id){return new Promise((ok,no)=>{const t=db.transaction(s,'readwrite').objectStore(s).delete(id);t.onsuccess=()=>ok();t.onerror=()=>no(t.error)})}
@@ -329,9 +355,14 @@ function renderIP(cid,bid){$(cid).innerHTML=ICONS.map(i=>'<button class="icon-op
 function pickI(cid,bid,i){selIcon=i;$(bid).textContent=i;$(cid).querySelectorAll('.icon-opt').forEach(o=>o.classList.toggle('sel',o.textContent===i));$(cid).style.display='none'}
 
 /* META */
-async function loadMeta(){const cats=await dbA('categories');if(!cats.length){for(const c of DEF_CATS)await dbAdd('categories',{name:c,icon:DEF_IC[c]||'📌'});CATS=[...DEF_CATS];CIM={...DEF_IC}}else{CATS=cats.map(c=>c.name);CIM={};cats.forEach(c=>CIM[c.name]=c.icon||'📌')}BKS=[...DEF_BK]}
+async function loadMeta(){
+  const cats=await dbA('categories');
+  if(!cats.length){for(const c of DEF_CATS)await dbAdd('categories',{name:c,icon:DEF_IC[c]||'📌'});CATS=[...DEF_CATS];CIM={...DEF_IC}}else{CATS=cats.map(c=>c.name);CIM={};cats.forEach(c=>CIM[c.name]=c.icon||'📌')}
+  const bks=await dbA('banks');
+  if(!bks.length){for(const b of DEF_BK)await dbAdd('banks',{name:b,icon:'🏦'});BKS=DEF_BK.map(b=>({name:b,icon:'🏦'}))}else{BKS=bks}
+}
 function fillCS(id){$(id).innerHTML='<option value="">Choisir...</option>'+CATS.map(c=>'<option value="'+c+'">'+(CIM[c]||'📌')+' '+c+'</option>').join('')}
-function fillBS(id){$(id).innerHTML='<option value="">Choisir...</option>'+BKS.map(b=>'<option value="'+b+'">'+b+'</option>').join('')}
+function fillBS(id){$(id).innerHTML='<option value="">Choisir...</option>'+BKS.map(b=>'<option value="'+b.name+'">'+(b.icon||'🏦')+' '+b.name+'</option>').join('')}
 
 /* DASHBOARD */
 async function renderD(){
@@ -370,7 +401,7 @@ async function renderD(){
 function chgMonth(d){curM+=d;if(curM>11){curM=0;curY++}if(curM<0){curM=11;curY--}renderD()}
 
 /* TX ROW */
-function txR(t){const d=new Date(t.date),ds=d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}),icon=CIM[t.categorie]||(t.type==='Salaire'?'💰':'📌'),bg=t.type==='Salaire'?'var(--accent3)':t.type==='Epargne'?'var(--accent5)':t.type==='Prelevement'?'var(--accent)':'var(--accent2)',cls=t.type==='Salaire'?'inc':'exp',sign=t.type==='Salaire'?'+':'-',rec=t.recurring?'<span class="rec-tag">récur.</span>':'';return '<div class="tx-item" onclick="openEM('+t.id+')"><div class="tx-icon" style="background:'+bg+'22;color:'+bg+'">'+icon+'</div><div class="tx-info"><div class="cat">'+rec+(t.categorie||t.type)+'</div><div class="org">'+(t.organisme||'')+' '+(t.banque?'· '+t.banque:'')+' '+(t.note?'· '+t.note:'')+'</div></div><div><div class="tx-amt '+cls+'">'+sign+fmt(t.montant)+'</div><div class="tx-date">'+ds+'</div></div></div>'}
+function txR(t){const d=new Date(t.date),ds=d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}),icon=CIM[t.categorie]||(t.type==='Salaire'?'💰':'📌'),bg=t.type==='Salaire'?'var(--accent3)':t.type==='Epargne'?'var(--accent5)':t.type==='Prelevement'?'var(--accent)':'var(--accent2)',cls=t.type==='Salaire'?'inc':'exp',sign=t.type==='Salaire'?'+':'-',rem=t.reminder?'<span class="rem-tag">🔔 '+t.reminder.every+(t.reminder.unit==='jour'?'j':t.reminder.unit==='semaine'?'sem':'m')+'</span>':'';return '<div class="tx-item" onclick="openEM('+t.id+')"><div class="tx-icon" style="background:'+bg+'22;color:'+bg+'">'+icon+'</div><div class="tx-info"><div class="cat">'+rem+(t.categorie||t.type)+'</div><div class="org">'+(t.organisme||'')+' '+(t.banque?'· '+t.banque:'')+' '+(t.note?'· '+t.note:'')+'</div></div><div><div class="tx-amt '+cls+'">'+sign+fmt(t.montant)+'</div><div class="tx-date">'+ds+'</div></div></div>'}
 
 /* TX LIST */
 async function renderTL(){
@@ -390,12 +421,12 @@ async function renderTL(){
 function txCM(d){txM_+=d;if(txM_>11){txM_=0;txY_++}if(txM_<0){txM_=11;txY_--}$('txPills').dataset.init='0';renderTL()}
 
 /* ADD TX */
-function openAM(){editId=null;$('aMT').textContent='Nouvelle transaction';$('aDate').value=new Date().toISOString().split('T')[0];$('aTP').innerHTML=['Salaire','Prelevement','Courant','Epargne'].map((t,i)=>'<div class="chip'+(i===0?' on':'')+'" data-val="'+t+'" onclick="this.parentElement.querySelectorAll(\'.chip\').forEach(c=>c.classList.remove(\'on\'));this.classList.add(\'on\')">'+(t==='Prelevement'?'Prélèvement':t)+'</div>').join('');fillCS('aCat');fillBS('aBk');$('aOrg').value='';$('aAmt').value='';$('aNt').value='';$('aRec').classList.remove('on');$('addM').classList.add('show')}
-async function saveTx(){const type=$('aTP').querySelector('.chip.on')?.dataset.val,date=$('aDate').value,cat=$('aCat').value,org=$('aOrg').value,amt=parseFloat($('aAmt').value),bank=$('aBk').value,note=$('aNt').value,rec=$('aRec').classList.contains('on');if(!date||!amt){toast('Date et montant requis');return}await dbAdd('transactions',{type,date,categorie:cat,organisme:org,montant:amt,banque:bank,note,recurring:rec});toast('Enregistré ✓');closeM('addM');renderD();renderTL()}
+function openAM(){editId=null;$('aMT').textContent='Nouvelle transaction';$('aDate').value=new Date().toISOString().split('T')[0];$('aTP').innerHTML=['Salaire','Prelevement','Courant','Epargne'].map((t,i)=>'<div class="chip'+(i===0?' on':'')+'" data-val="'+t+'" onclick="this.parentElement.querySelectorAll(\'.chip\').forEach(c=>c.classList.remove(\'on\'));this.classList.add(\'on\')">'+(t==='Prelevement'?'Prélèvement':t)+'</div>').join('');fillCS('aCat');fillBS('aBk');$('aOrg').value='';$('aAmt').value='';$('aNt').value='';$('aRem').classList.remove('on');$('aRemConf').style.display='none';$('aRemN').value='1';$('aRemU').value='mois';$('addM').classList.add('show')}
+async function saveTx(){const type=$('aTP').querySelector('.chip.on')?.dataset.val,date=$('aDate').value,cat=$('aCat').value,org=$('aOrg').value,amt=parseFloat($('aAmt').value),bank=$('aBk').value,note=$('aNt').value,hasRem=$('aRem').classList.contains('on');let reminder=null;if(hasRem){reminder={every:parseInt($('aRemN').value)||1,unit:$('aRemU').value,nextDate:calcNextReminder(date,parseInt($('aRemN').value)||1,$('aRemU').value)}}if(!date||!amt){toast('Date et montant requis');return}await dbAdd('transactions',{type,date,categorie:cat,organisme:org,montant:amt,banque:bank,note,reminder});if(hasRem)scheduleReminder({categorie:cat,organisme:org,montant:amt,reminder});toast('Enregistré ✓');closeM('addM');renderD();renderTL()}
 
 /* EDIT TX */
-async function openEM(id){const all=await dbA('transactions');const t=all.find(x=>x.id===id);if(!t)return;editId=id;$('eDate').value=t.date;$('eCat').value=t.categorie||'';$('eOrg').value=t.organisme||'';$('eAmt').value=t.montant;$('eNt').value=t.note||'';$('editM').classList.add('show')}
-async function updTx(){if(!editId)return;const all=await dbA('transactions');const t=all.find(x=>x.id===editId);if(!t)return;t.date=$('eDate').value;t.categorie=$('eCat').value;t.organisme=$('eOrg').value;t.montant=parseFloat($('eAmt').value);t.note=$('eNt').value;await dbP('transactions',t);closeM('editM');toast('Modifié ✓');renderTL();renderD()}
+async function openEM(id){const all=await dbA('transactions');const t=all.find(x=>x.id===id);if(!t)return;editId=id;$('eDate').value=t.date;$('eCat').value=t.categorie||'';$('eOrg').value=t.organisme||'';$('eAmt').value=t.montant;$('eNt').value=t.note||'';if(t.reminder){$('eRem').classList.add('on');$('eRemConf').style.display='flex';$('eRemN').value=t.reminder.every||1;$('eRemU').value=t.reminder.unit||'mois'}else{$('eRem').classList.remove('on');$('eRemConf').style.display='none';$('eRemN').value='1';$('eRemU').value='mois'}$('editM').classList.add('show')}
+async function updTx(){if(!editId)return;const all=await dbA('transactions');const t=all.find(x=>x.id===editId);if(!t)return;t.date=$('eDate').value;t.categorie=$('eCat').value;t.organisme=$('eOrg').value;t.montant=parseFloat($('eAmt').value);t.note=$('eNt').value;const hasRem=$('eRem').classList.contains('on');if(hasRem){const ev=parseInt($('eRemN').value)||1;const un=$('eRemU').value;t.reminder={every:ev,unit:un,nextDate:calcNextReminder(t.date,ev,un)}}else{t.reminder=null}await dbP('transactions',t);closeM('editM');toast('Modifié ✓');renderTL();renderD()}
 async function delTx(){if(!editId||!confirm('Supprimer ?'))return;await dbD('transactions',editId);closeM('editM');toast('Supprimé');renderTL();renderD()}
 
 /* BUDGET */
@@ -438,7 +469,7 @@ async function renderSt(){
 }
 
 /* TOOLS */
-async function renderTl(){await renderH();await renderGl();renderCL();calcLn()}
+async function renderTl(){await renderH();await renderGl();renderCL();renderBkL();calcLn()}
 
 async function renderH(){
   const tx=await dbA('transactions'),bg=await dbA('budget');const now=new Date(),m=now.getMonth(),y=now.getFullYear();
@@ -477,11 +508,17 @@ function openCM(){selIcon='📌';$('cIB').textContent='📌';$('cNm').value='';r
 async function saveCt(){const nm=$('cNm').value.trim();if(!nm){toast('Nom requis');return}await dbAdd('categories',{name:nm,icon:selIcon});await loadMeta();toast('Créé ✓');closeM('catM');renderCL()}
 async function rmCt(id){if(!confirm('Supprimer ?'))return;await dbD('categories',id);await loadMeta();toast('Supprimé');renderCL()}
 
+/* BANKS */
+async function renderBkL(){const bks=await dbA('banks');$('bkL').innerHTML=bks.map(b=>'<div class="b-row"><div class="left"><div class="nm">'+(b.icon||'🏦')+' '+b.name+'</div></div><button class="icon-btn" style="width:28px;height:28px;font-size:.8rem;border:none;background:none;color:var(--red)" onclick="rmBk('+b.id+')">✕</button></div>').join('')}
+function openBkM(){selIcon='🏦';$('bkIB').textContent='🏦';$('bkNm').value='';renderIP('bkIP','bkIB');$('bkIP').style.display='none';$('bkM').classList.add('show')}
+async function saveBk(){const nm=$('bkNm').value.trim();if(!nm){toast('Nom requis');return}await dbAdd('banks',{name:nm,icon:selIcon});await loadMeta();toast('Banque ajoutée ✓');closeM('bkM');renderBkL()}
+async function rmBk(id){if(!confirm('Supprimer cette banque ?'))return;await dbD('banks',id);await loadMeta();toast('Supprimé');renderBkL()}
+
 /* EXPORT/IMPORT */
-async function expJSON(){const d={transactions:await dbA('transactions'),budget:await dbA('budget'),goals:await dbA('goals'),categories:await dbA('categories'),date:new Date().toISOString()};const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='finance_'+new Date().toISOString().split('T')[0]+'.json';a.click();toast('Export JSON ✓')}
+async function expJSON(){const d={transactions:await dbA('transactions'),budget:await dbA('budget'),goals:await dbA('goals'),categories:await dbA('categories'),banks:await dbA('banks'),date:new Date().toISOString()};const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='finance_'+new Date().toISOString().split('T')[0]+'.json';a.click();toast('Export JSON ✓')}
 async function expCSV(){const tx=await dbA('transactions');const rows=[['Date','Type','Catégorie','Organisme','Montant','Banque','Note']];tx.forEach(t=>rows.push([t.date,t.type,t.categorie,t.organisme,t.montant,t.banque,t.note||'']));const csv=rows.map(r=>r.map(c=>'"'+(c||'').toString().replace(/"/g,'""')+'"').join(',')).join('\n');const b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='finance_'+new Date().toISOString().split('T')[0]+'.csv';a.click();toast('Export CSV ✓')}
-async function impJSON(e){const f=e.target.files[0];if(!f)return;try{const txt=await f.text();const d=JSON.parse(txt);let c=0;if(d.transactions)for(const t of d.transactions){const{id,...r}=t;await dbAdd('transactions',r);c++}if(d.budget)for(const b of d.budget){const{id,...r}=b;await dbAdd('budget',r)}if(d.goals)for(const g of d.goals){const{id,...r}=g;await dbAdd('goals',r)}if(d.categories)for(const ct of d.categories){const{id,...r}=ct;await dbAdd('categories',r)}await loadMeta();toast('Importé: '+c+' tx');renderD()}catch(er){toast("Erreur d'import")}e.target.value=''}
-async function resetAll(){if(!confirm('⚠️ Tout supprimer ?'))return;if(!confirm('Irréversible !'))return;await dbCl('transactions');await dbCl('budget');await dbCl('goals');await dbCl('categories');toast('Réinitialisé');setTimeout(()=>location.reload(),500)}
+async function impJSON(e){const f=e.target.files[0];if(!f)return;try{const txt=await f.text();const d=JSON.parse(txt);let c=0;if(d.transactions)for(const t of d.transactions){const{id,...r}=t;await dbAdd('transactions',r);c++}if(d.budget)for(const b of d.budget){const{id,...r}=b;await dbAdd('budget',r)}if(d.goals)for(const g of d.goals){const{id,...r}=g;await dbAdd('goals',r)}if(d.categories)for(const ct of d.categories){const{id,...r}=ct;await dbAdd('categories',r)}if(d.banks)for(const bk of d.banks){const{id,...r}=bk;await dbAdd('banks',r)}await loadMeta();toast('Importé: '+c+' tx');renderD()}catch(er){toast("Erreur d'import")}e.target.value=''}
+async function resetAll(){if(!confirm('⚠️ Tout supprimer ?'))return;if(!confirm('Irréversible !'))return;await dbCl('transactions');await dbCl('budget');await dbCl('goals');await dbCl('categories');await dbCl('banks');toast('Réinitialisé');setTimeout(()=>location.reload(),500)}
 
 /* SEED */
 async function seedBg(){const bg=await dbA('budget');if(bg.length)return;const items=[
@@ -515,11 +552,30 @@ async function seedBg(){const bg=await dbA('budget');if(bg.length)return;const i
 {type:'Epargne',categorie:'Couple',organisme:'',montant:0,banque:'',icon:'💕'}];
 for(const i of items)await dbAdd('budget',i)}
 
+/* REMINDERS & NOTIFICATIONS */
+function calcNextReminder(dateStr,every,unit){const d=new Date(dateStr);if(unit==='jour')d.setDate(d.getDate()+every);else if(unit==='semaine')d.setDate(d.getDate()+every*7);else d.setMonth(d.getMonth()+every);return d.toISOString().split('T')[0]}
+
+function scheduleReminder(tx){if(!('Notification' in window))return;if(Notification.permission==='default')Notification.requestPermission()}
+
+async function checkReminders(){
+  if(!('Notification' in window))return;
+  const tx=await dbA('transactions');const today=new Date().toISOString().split('T')[0];
+  const due=tx.filter(t=>t.reminder&&t.reminder.nextDate&&t.reminder.nextDate<=today);
+  if(!due.length)return;
+  if(Notification.permission==='default')await Notification.requestPermission();
+  if(Notification.permission!=='granted')return;
+  for(const t of due){
+    new Notification('💰 Rappel Finance',{body:(t.categorie||'Transaction')+' — '+(t.organisme||'')+' : '+fmt(t.montant),icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="80" font-size="80">₣</text></svg>',tag:'fin-rem-'+t.id});
+    t.reminder.nextDate=calcNextReminder(t.reminder.nextDate,t.reminder.every,t.reminder.unit);
+    await dbP('transactions',t);
+  }
+}
+
 /* CLOSE MODALS */
 document.querySelectorAll('.modal-bg').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show')}));
 
 /* INIT */
-async function init(){await openDB();const th=await dbG('settings',1);if(th&&th.value==='dark'){document.documentElement.dataset.theme='dark';$('themeBtn').textContent='☀️'}await loadMeta();await seedBg();renderD()}
+async function init(){await openDB();const th=await dbG('settings',1);if(th&&th.value==='dark'){document.documentElement.dataset.theme='dark';$('themeBtn').textContent='☀️'}await loadMeta();await seedBg();renderD();checkReminders();if('Notification' in window&&Notification.permission==='default')Notification.requestPermission()}
 init();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
